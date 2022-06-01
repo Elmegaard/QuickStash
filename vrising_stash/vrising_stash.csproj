@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="XCOPY /Y /R &quot;$(TargetDir)$(ProjectName).*&quot; &quot;F:\SteamLibrary\steamapps\common\VRising\BepInEx\plugins\elme_stash\&quot;&#xD;&#xA;XCOPY /Y /R &quot;$(TargetDir)$(ProjectName).*&quot; &quot;F:\SteamLibrary\steamapps\common\VRising\VRising_Server\BepInEx\plugins\elme_stash\&quot;" />
+    <Exec Command="XCOPY /Y /R &quot;$(TargetDir)$(TargetName).*&quot; &quot;F:\SteamLibrary\steamapps\common\VRising\BepInEx\plugins\&quot;&#xD;&#xA;XCOPY /Y /R &quot;$(TargetDir)$(TargetName).*&quot; &quot;F:\SteamLibrary\steamapps\common\VRising\VRising_Server\BepInEx\plugins\&quot;" />
   </Target>
 
   <ItemGroup>

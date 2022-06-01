@@ -8,6 +8,9 @@ using Unity.Entities;
 using System.Threading;
 using Il2CppSystem.Threading.Tasks;
 using System.Linq;
+using ProjectM.CastleBuilding;
+using ProjectM.Tiles;
+using Unity.Transforms;
 
 namespace vrising_stash
 {
@@ -15,12 +18,11 @@ namespace vrising_stash
     public class GameplayInputSystem_Patch
     {
         private static DateTime _lastInventoryTransfer = DateTime.Now;
-        private static DateTime _lastInventoryUpdate = DateTime.Now;
+        private static DateTime _lastInventoryUpdate = DateTime.Now.AddSeconds(-8);
         private static List<Entity> _inventoryEntities = new List<Entity>();
-        private static bool _isTransfering = false;
-        private static bool _isUpdatingInventory = false;
         private static Task _updateListTask = null;
         private static Task _transferTask = null;
+        private static object _lock = new object();
 
         [HarmonyPatch(typeof(GameplayInputSystem), nameof(GameplayInputSystem.HandleInput))]
         [HarmonyPostfix]
@@ -42,7 +44,7 @@ namespace vrising_stash
                 }
             }
 
-            if ((_transferTask == null || _transferTask.IsCompleted) && Input.GetKeyInt(KeyCode.G) && DateTime.Now - _lastInventoryTransfer > TimeSpan.FromSeconds(2))
+            if ((_transferTask == null || _transferTask.IsCompleted) && Input.GetKeyInt(Plugin.configKeybinding.Value) && DateTime.Now - _lastInventoryTransfer > TimeSpan.FromSeconds(2))
             {
                 TransferItems(__instance);
             }
@@ -56,46 +58,59 @@ namespace vrising_stash
             // Run as task to avoid client stutter
             _transferTask = Task.Run(new Action(() =>
             {
-                while (_isUpdatingInventory)
+                lock (_lock)
                 {
-                    Thread.Sleep(50);
-                }
-                _isTransfering = true;
+                    _lastInventoryTransfer = DateTime.Now;
 
-                Entity playerInventory = new Entity();
-                InventoryUtilities.TryGetInventoryEntity(entityManager, character, out playerInventory);
+                    Entity playerInventory = new Entity();
+                    InventoryUtilities.TryGetInventoryEntity(entityManager, character, out playerInventory);
 
-                if (playerInventory != null)
-                {
+                    if (playerInventory == null || playerInventory == Entity.Null)
+                    {
+                        return;
+                    }
+
                     foreach (var invEntity in _inventoryEntities)
                     {
+                        if (invEntity == null || invEntity == Entity.Null)
+                        {
+                            continue;
+                        }
                         EventHelper.TrySmartMergeItems(entityManager, playerInventory, invEntity);
                     }
                 }
-
-                _lastInventoryTransfer = DateTime.Now;
-                _isTransfering = false;
             }));
         }
 
-        public static List<int> _containerComponents = new List<int>() {
-            941, // InventoryOwner
-            1041, // Team
-            1405, // CastleHeartConnection
-            67109800, // InventoryBuffer
-            16779905, // NameableInteractable
-            16778151, // Immortal
-            16778341, // Immaterial
-            16778344, // Invulnerable
-        };
+        private static ComponentType[] _containerComponents = null;
+        private static ComponentType[] ContainerComponents
+        {
+            get
+            {
+                if (_containerComponents == null)
+                {
+                    _containerComponents = new[] {
+                        ComponentType.ReadOnly(InventoryOwner.Il2CppType),
+                        ComponentType.ReadOnly(Team.Il2CppType),
+                        ComponentType.ReadOnly(CastleHeartConnection.Il2CppType),
+                        ComponentType.ReadOnly(InventoryBuffer.Il2CppType),
+                        ComponentType.ReadOnly(NameableInteractable.Il2CppType),
+                        ComponentType.ReadOnly(Immortal.Il2CppType),
+                        ComponentType.ReadOnly(Immaterial.Il2CppType),
+                        ComponentType.ReadOnly(Invulnerable.Il2CppType),
+                    };
+                }
+                return _containerComponents;
+            }
+        }
 
         public static bool IsEntityStash(EntityManager entityManager, Entity entity)
         {
             var archType = UnsafeEntityManagerUtility.GetEntityArchetype(entityManager, entity);
-            var componentTypes = archType.GetComponentTypes(Unity.Collections.Allocator.Persistent);
+            var componentTypes = archType.GetComponentTypes(Unity.Collections.Allocator.Persistent).ToArray().ToList();
 
             // Make sure all comoponents in _containerComponents is in the entity
-            if (_containerComponents.Except(componentTypes.ToArray().ToList().Select(x => x.TypeIndex)).Any())
+            if (ContainerComponents.Select(x => x.TypeIndex).Except(componentTypes.Select(x => x.TypeIndex)).Any())
             {
                 return false;
             }
@@ -106,7 +121,7 @@ namespace vrising_stash
         private static void UpdateInventoryList(EntityManager entityManager, ClientGameManager gameManager, Entity character)
         {
             var entities = entityManager.GetAllEntities(Unity.Collections.Allocator.Persistent);
-            if (entities == null || gameManager == null || character == null || character == Entity.Null || gameManager._TeamChecker == null)
+            if (gameManager == null || character == null || character == Entity.Null || gameManager._TeamChecker == null)
             {
                 return;
             }
@@ -114,41 +129,35 @@ namespace vrising_stash
             // Run as task to avoid client stutter
             _updateListTask = Task.Run(new Action(() =>
             {
-                while (_isTransfering)
+                lock (_lock)
                 {
-                    Thread.Sleep(50);
+                    _inventoryEntities = new List<Entity>();
+
+                    foreach (var entity in entities)
+                    {
+                        Entity inventoryEntity = new Entity();
+                        InventoryUtilities.TryGetInventoryEntity(entityManager, entity, out inventoryEntity);
+
+                        if (inventoryEntity == null || inventoryEntity == Entity.Null)
+                        {
+                            continue;
+                        }
+
+                        if (!IsEntityStash(entityManager, inventoryEntity))
+                        {
+                            continue;
+                        }
+
+                        if (!gameManager._TeamChecker.IsAllies(character, inventoryEntity))
+                        {
+                            continue;
+                        }
+
+                        _inventoryEntities.Add(inventoryEntity);
+                    }
+
+                    _lastInventoryUpdate = DateTime.Now;
                 }
-
-                _isUpdatingInventory = true;
-                _inventoryEntities = new List<Entity>();
-
-                foreach (var entity in entities)
-                {
-                    Entity inventoryEntity = new Entity();
-                    InventoryUtilities.TryGetInventoryEntity(entityManager, entity, out inventoryEntity);
-
-                    if (inventoryEntity == null || inventoryEntity == Entity.Null)
-                    {
-                        continue;
-                    }
-
-                    // Make sure all comoponents in _containerComponents is in the entity
-                    if (!IsEntityStash(entityManager, entity))
-                    {
-                        continue;
-                    }
-
-                    if (!gameManager._TeamChecker.IsAllies(character, inventoryEntity))
-                    {
-                        continue;
-                    }
-
-
-                    _inventoryEntities.Add(inventoryEntity);
-                }
-
-                _lastInventoryUpdate = DateTime.Now;
-                _isUpdatingInventory = false;
             }));
         }
     }
@@ -156,6 +165,7 @@ namespace vrising_stash
     [HarmonyPatch]
     public class ClientEventValidation_Patch
     {
+
         [HarmonyPatch(typeof(ClientEventValidation), nameof(ClientEventValidation.IsInteractingWithInventory))]
         [HarmonyPostfix]
         static void IsInteractingWithInventory(ref bool __result, Entity interactor, Entity inventory, EntityManager entityManager)
@@ -171,7 +181,35 @@ namespace vrising_stash
                 return;
             }
 
+            if (!IsWithinDistance(interactor, inventory, entityManager))
+            {
+                return;
+            }
+
             __result = true;
+        }
+
+        private static bool IsWithinDistance(Entity interactor, Entity inventory, EntityManager entityManager)
+        {
+            var interactorLocation = entityManager.GetComponentData<LocalToWorld>(interactor);
+            var inventoryLocation = entityManager.GetComponentData<LocalToWorld>(inventory);
+
+            Vector3 difference = new Vector3(
+                interactorLocation.Position.x - inventoryLocation.Position.x,
+                interactorLocation.Position.y - inventoryLocation.Position.y,
+                interactorLocation.Position.z - inventoryLocation.Position.z);
+
+            double distance = Math.Sqrt(
+                  Math.Pow(difference.x, 2f) +
+                  Math.Pow(difference.y, 2f) +
+                  Math.Pow(difference.z, 2f));
+
+            if (distance > Plugin.configMaxDistance.Value)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

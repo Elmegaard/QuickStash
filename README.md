@@ -1,6 +1,8 @@
 # QuickStash
 
-A mod that allows you to transfer all items in your inventory to nearby stashes with 1 click. Note this is both a client and server mod.
+A mod that uses _Compulsively Count_ on all nearby stashes with 1 click.
+
+Note this is both a client and server mod.
 
 ### Installation
 
@@ -8,10 +10,12 @@ A mod that allows you to transfer all items in your inventory to nearby stashes 
 - Extract _quick_stash.dll_ into _(VRising folder)/BepInEx/plugins_
 - Extract _quick_stash.dll_ into _(VRising folder)/VRising_Server/BepInEx/plugins_
 
-### Known Issues
+### Configuration
 
-- It has inifinite range
-- Key is hardcoded to 'G'
+After running the game once, the config files will be generated.
+
+- Update client config in _(VRising folder)/BepInEx/config/quick_stash.cfg_
+- Update server config in _(VRising folder)/VRising_Server/BepInEx/config/quick_stash.cfg_
 
 ### Troubleshooting
 
@@ -23,5 +27,16 @@ A mod that allows you to transfer all items in your inventory to nearby stashes 
 
 ### Changelog
 
-`1.0.1` Updated Readme  
-`1.0.0` Initial mod upload
+`1.1.0`
+
+- Set max distance
+- Made config for keybind
+- Made config for max distance
+
+`1.0.1`
+
+- Updated Readme
+
+`1.0.0`
+
+- Initial mod upload
