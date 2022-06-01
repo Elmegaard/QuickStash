@@ -1,7 +1,7 @@
 {
   "name": "QuickStash",
   "description": "Allows you to transfer all items in your inventory to nearby stashes with 1 click",
-  "version_number": "1.0.0",
+  "version_number": "1.0.1",
   "dependencies": ["BepInEx-BepInExPack_V_Rising-1.0.0"],
   "website_url": "https://github.com/Elmegaard/QuickStash"
 }
