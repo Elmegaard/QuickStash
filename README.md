@@ -24,7 +24,8 @@ After running the game once, the config files will be generated.
 
 ### Support
 
-- Please open a ticket on github for support.
+- Open a ticket on github
+- Ask in the [V Rising Mod Community](https://discord.gg/CWzkHvekg3) Discord
 
 ### Changelog
 
