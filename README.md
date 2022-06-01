@@ -15,4 +15,4 @@ A mod that allows you to transfer all items in your inventory to nearby stashes 
 
 ### Changelog
 
-`1.0.1` Initial mod upload
+`1.0.0` Initial mod upload
