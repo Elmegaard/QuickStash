@@ -18,7 +18,7 @@ namespace vrising_stash
     public class GameplayInputSystem_Patch
     {
         private static DateTime _lastInventoryTransfer = DateTime.Now;
-        private static DateTime _lastInventoryUpdate = DateTime.Now.AddSeconds(-8);
+        private static DateTime _lastInventoryUpdate = DateTime.Now;
         private static List<Entity> _inventoryEntities = new List<Entity>();
         private static Task _updateListTask = null;
         private static Task _transferTask = null;
@@ -148,10 +148,12 @@ namespace vrising_stash
                             continue;
                         }
 
-                        if (!gameManager._TeamChecker.IsAllies(character, inventoryEntity))
-                        {
-                            continue;
-                        }
+                        // For now remove client sided is allies check, as it seems to lock up the client in some cases.
+                        // This is still tested on the server
+                        //if (!gameManager._TeamChecker.IsAllies(character, inventoryEntity))
+                        //{
+                        //    continue;
+                        //}
 
                         _inventoryEntities.Add(inventoryEntity);
                     }
