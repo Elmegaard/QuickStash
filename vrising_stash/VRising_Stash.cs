@@ -42,7 +42,7 @@ namespace vrising_stash
                 }
             }
 
-            if ((_transferTask == null || _transferTask.IsCompleted) && Input.GetKeyInt(KeyCode.G) && DateTime.Now - _lastInventoryTransfer > TimeSpan.FromSeconds(2))
+            if ((_transferTask == null || _transferTask.IsCompleted) && Input.GetKeyInt(Plugin.HotKey.Value) && DateTime.Now - _lastInventoryTransfer > TimeSpan.FromSeconds(2))
             {
                 TransferItems(__instance);
             }
