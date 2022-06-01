@@ -13,10 +13,6 @@ A mod that allows you to transfer all items in your inventory to nearby stashes 
 - It has inifinite range
 - Key is hardcoded to 'G'
 
-### Support
-
-Join the [modding community](https://discord.gg/CWzkHvekg3) for support `@Night#3605`
-
 ### Changelog
 
 `1.0.0` Initial mod upload
