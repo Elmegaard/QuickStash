@@ -1,4 +1,4 @@
-# PopupTotals
+# QuickStash
 
 A mod that allows you to transfer all items in your inventory to nearby stashes with 1 click. Note this is both a client and server mod.
 
