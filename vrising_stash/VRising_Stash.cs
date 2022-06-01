@@ -147,8 +147,6 @@ namespace vrising_stash
                     _inventoryEntities.Add(inventoryEntity);
                 }
 
-                Plugin.Logger.LogInfo($"Found {_inventoryEntities.Count} stashes");
-
                 _lastInventoryUpdate = DateTime.Now;
                 _isUpdatingInventory = false;
             }));
