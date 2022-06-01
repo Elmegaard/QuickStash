@@ -28,6 +28,10 @@ After running the game once, the config files will be generated.
 
 ### Changelog
 
+`1.1.1`
+
+- Updated Readme
+
 `1.1.0`
 
 - Set max distance
