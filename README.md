@@ -13,6 +13,15 @@ A mod that allows you to transfer all items in your inventory to nearby stashes 
 - It has inifinite range
 - Key is hardcoded to 'G'
 
+### Troubleshooting
+
+- If the mod only works when a stash is open, it is because the server part of the mod is not installed. There has been reported issues with this in singleplayer. Unfortunately the only fix I have found for now is to run a dedicated server instead of running singleplayer.
+
+### Support
+
+- Please open a ticket on github for support.
+
 ### Changelog
 
+`1.0.1` Updated Readme  
 `1.0.0` Initial mod upload
