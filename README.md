@@ -1,6 +1,7 @@
 # QuickStash
 
-A mod that uses _Compulsively Count_ on all nearby stashes with 1 click.
+A mod that uses _Compulsively Count_ on all nearby stashes with 1 click.  
+Default key is G.
 
 Note this is both a client and server mod.
 
