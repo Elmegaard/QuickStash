@@ -35,12 +35,11 @@ namespace vrising_stash
 
             if ((_updateListTask == null || _updateListTask.IsCompleted) && DateTime.Now - _lastInventoryUpdate > TimeSpan.FromSeconds(10))
             {
-                var gameManager = __instance.World.GetExistingSystem<ClientScriptMapper>()?._ClientGameManager;
                 var character = EntitiesHelper.GetLocalCharacterEntity(__instance.World.EntityManager);
 
-                if (gameManager != null && character != null && character.Index > -1)
+                if (character != null && character != Entity.Null)
                 {
-                    UpdateInventoryList(__instance.World.EntityManager, gameManager, character);
+                    UpdateInventoryList(__instance.World.EntityManager, character);
                 }
             }
 
@@ -118,10 +117,10 @@ namespace vrising_stash
             return true;
         }
 
-        private static void UpdateInventoryList(EntityManager entityManager, ClientGameManager gameManager, Entity character)
+        private static void UpdateInventoryList(EntityManager entityManager, Entity character)
         {
             var entities = entityManager.GetAllEntities(Unity.Collections.Allocator.Persistent);
-            if (gameManager == null || character == null || character == Entity.Null || gameManager._TeamChecker == null)
+            if (character == null || character == Entity.Null)
             {
                 return;
             }
@@ -147,13 +146,6 @@ namespace vrising_stash
                         {
                             continue;
                         }
-
-                        // For now remove client sided is allies check, as it seems to lock up the client in some cases.
-                        // This is still tested on the server
-                        //if (!gameManager._TeamChecker.IsAllies(character, inventoryEntity))
-                        //{
-                        //    continue;
-                        //}
 
                         _inventoryEntities.Add(inventoryEntity);
                     }
