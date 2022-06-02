@@ -19,7 +19,7 @@ namespace vrising_stash
         private void InitConfig()
         {
             configKeybinding = Config.Bind("Client", "Keybinding", KeyCode.G, "The key to press to transfer items");
-            configMaxDistance = Config.Bind("Server", "MaxDistance", 40.0f, "The max distance for transfering items");
+            configMaxDistance = Config.Bind("Server", "MaxDistance", 50.0f, "The max distance for transfering items");
         }
 
         public override void Load()

@@ -29,6 +29,10 @@ After running the game once, the config files will be generated.
 
 ### Changelog
 
+`1.1.3`
+
+- Increased default range to 50
+
 `1.1.2`
 
 - Fixed a client crash
