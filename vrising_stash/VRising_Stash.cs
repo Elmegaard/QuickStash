@@ -11,6 +11,7 @@ using System.Linq;
 using ProjectM.CastleBuilding;
 using ProjectM.Tiles;
 using Unity.Transforms;
+using UnhollowerRuntimeLib;
 
 namespace vrising_stash
 {
@@ -89,14 +90,15 @@ namespace vrising_stash
                 if (_containerComponents == null)
                 {
                     _containerComponents = new[] {
-                        ComponentType.ReadOnly(InventoryOwner.Il2CppType),
-                        ComponentType.ReadOnly(Team.Il2CppType),
-                        ComponentType.ReadOnly(CastleHeartConnection.Il2CppType),
-                        ComponentType.ReadOnly(InventoryBuffer.Il2CppType),
-                        ComponentType.ReadOnly(NameableInteractable.Il2CppType),
-                        ComponentType.ReadOnly(Immortal.Il2CppType),
-                        ComponentType.ReadOnly(Immaterial.Il2CppType),
-                        ComponentType.ReadOnly(Invulnerable.Il2CppType),
+
+                        ComponentType.ReadOnly(Il2CppType.Of<InventoryOwner>()),
+                        ComponentType.ReadOnly(Il2CppType.Of<Team>()),
+                        ComponentType.ReadOnly(Il2CppType.Of<CastleHeartConnection>()),
+                        ComponentType.ReadOnly(Il2CppType.Of<InventoryBuffer>()),
+                        ComponentType.ReadOnly(Il2CppType.Of<NameableInteractable>()),
+                        ComponentType.ReadOnly(Il2CppType.Of<Immortal>()),
+                        ComponentType.ReadOnly(Il2CppType.Of<Immaterial>()),
+                        ComponentType.ReadOnly(Il2CppType.Of<Invulnerable>()),
                     };
                 }
                 return _containerComponents;
