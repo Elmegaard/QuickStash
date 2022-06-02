@@ -29,6 +29,10 @@ After running the game once, the config files will be generated.
 
 ### Changelog
 
+`1.1.2`
+
+- Fixed a client crash
+
 `1.1.1`
 
 - Updated Readme
