@@ -11,7 +11,6 @@ namespace vrising_stash
     public class QuickStashClient
     {
         private static DateTime _lastInventoryTransfer = DateTime.Now;
-        private static DateTime _lastInventoryUpdate = DateTime.Now;
         private static List<Entity> _inventoryEntities = new List<Entity>();
 
         public static void HandleInput(GameplayInputSystem __instance)
@@ -59,7 +58,7 @@ namespace vrising_stash
 
         public static void UpdateInventoryList()
         {
-            if (_inventoryEntities.Count == 0 || DateTime.Now - _lastInventoryUpdate < TimeSpan.FromSeconds(10))
+            if (_inventoryEntities.Count == 0)
             {
                 return;
             }
@@ -85,8 +84,6 @@ namespace vrising_stash
 
                 _inventoryEntities.Add(inventoryEntity);
             }
-
-            _lastInventoryUpdate = DateTime.Now;
         }
     }
 }
