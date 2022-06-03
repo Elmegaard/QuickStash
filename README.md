@@ -9,8 +9,8 @@ Note this is both a client and server mod.
 
 - Install [BepInEx](https://v-rising.thunderstore.io/package/BepInEx/BepInExPack_V_Rising/)
 - Install [Wetstone](https://v-rising.thunderstore.io/package/molenzwiebel/Wetstone/)
-- Extract _quick_stash.dll_ into _(VRising folder)/BepInEx/WetstonePlugins_
-- Extract _quick_stash.dll_ into _(VRising folder)/VRising_Server/BepInEx/WetstonePlugins_
+- Extract _quick_stash.dll_ into _(VRising folder)/BepInEx/plugins_
+- Extract _quick_stash.dll_ into _(VRising folder)/VRising_Server/BepInEx/plugins_
 
 ### Configuration
 
@@ -36,7 +36,7 @@ For server configuration, after running the game once, the config file will be g
 <details>
 <summary>Changelog</summary>
 
-`1.2.2` (unreleased)
+`1.2.2`
 
 - Reduce cooldown from 2 seconds to 0.5 seconds
 
