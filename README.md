@@ -8,8 +8,9 @@ Note this is both a client and server mod.
 ### Installation
 
 - Install [BepInEx](https://v-rising.thunderstore.io/package/BepInEx/BepInExPack_V_Rising/)
-- Extract _quick_stash.dll_ into _(VRising folder)/BepInEx/plugins_
-- Extract _quick_stash.dll_ into _(VRising folder)/VRising_Server/BepInEx/plugins_
+- Install [Wetstone](https://v-rising.thunderstore.io/package/molenzwiebel/Wetstone/)
+- Extract _quick_stash.dll_ into _(VRising folder)/BepInEx/WetstonePlugins_
+- Extract _quick_stash.dll_ into _(VRising folder)/VRising_Server/BepInEx/WetstonePlugins_
 
 ### Configuration
 
