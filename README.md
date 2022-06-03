@@ -34,7 +34,11 @@ For server configuration, after running the game once, the config file will be g
 
 ### Changelog
 
-`1.2.0` (unreleased)
+`1.2.1`
+
+- Fixed Readme
+
+`1.2.0`
 
 - Increased default range to 50
 - Added Wetstone (keybinds added to controls in-game)
