@@ -4,7 +4,6 @@ using Unity.Entities;
 
 namespace vrising_stash
 {
-
     [HarmonyPatch]
     public class ClientEventValidation_Patch
     {

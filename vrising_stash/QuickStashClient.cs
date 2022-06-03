@@ -13,103 +13,80 @@ namespace vrising_stash
         private static DateTime _lastInventoryTransfer = DateTime.Now;
         private static DateTime _lastInventoryUpdate = DateTime.Now;
         private static List<Entity> _inventoryEntities = new List<Entity>();
-        private static Task _updateListTask = null;
-        private static Task _transferTask = null;
-        private static readonly object _lock = new();
 
         public static void HandleInput(GameplayInputSystem __instance)
         {
-            if (!VWorld.IsClient)
+            //if (!VWorld.IsClient)
+            //{
+            //    return;
+            //}
+
+            if ((Input.GetKeyInt(Plugin.configKeybinding.Primary) || Input.GetKeyInt(Plugin.configKeybinding.Secondary)) && DateTime.Now - _lastInventoryTransfer > TimeSpan.FromSeconds(2))
+            {
+                UpdateInventoryList();
+                TransferItems();
+            }
+        }
+
+        private static void TransferItems()
+        {
+            var character = EntitiesHelper.GetLocalCharacterEntity(VWorld.Client.EntityManager);
+            if (character == Entity.Null)
             {
                 return;
             }
 
-            if ((_updateListTask == null || _updateListTask.IsCompleted) && DateTime.Now - _lastInventoryUpdate > TimeSpan.FromSeconds(10))
-            {
-                var character = EntitiesHelper.GetLocalCharacterEntity(__instance.World.EntityManager);
+            _lastInventoryTransfer = DateTime.Now;
 
-                if (character != null && character != Entity.Null)
-                {
-                    UpdateInventoryList(__instance.World.EntityManager, character);
-                }
-            }
+            Entity playerInventory;
+            InventoryUtilities.TryGetInventoryEntity(VWorld.Client.EntityManager, character, out playerInventory);
 
-            if ((_transferTask == null || _transferTask.IsCompleted) && (Input.GetKeyInt(Plugin.configKeybinding.Primary) || Input.GetKeyInt(Plugin.configKeybinding.Secondary)) && DateTime.Now - _lastInventoryTransfer > TimeSpan.FromSeconds(2))
-            {
-                TransferItems(__instance);
-            }
-        }
-
-        private static void TransferItems(GameplayInputSystem instance)
-        {
-            var character = EntitiesHelper.GetLocalCharacterEntity(instance.World.EntityManager);
-            EntityManager entityManager = instance.EntityManager;
-
-            // Run as task to avoid client stutter
-            _transferTask = Task.Run(new Action(() =>
-            {
-                lock (_lock)
-                {
-                    _lastInventoryTransfer = DateTime.Now;
-
-                    Entity playerInventory = new Entity();
-                    InventoryUtilities.TryGetInventoryEntity(entityManager, character, out playerInventory);
-
-                    if (playerInventory == null || playerInventory == Entity.Null)
-                    {
-                        return;
-                    }
-
-                    foreach (var invEntity in _inventoryEntities)
-                    {
-                        if (invEntity == Entity.Null || playerInventory == Entity.Null)
-                        {
-                            continue;
-                        }
-
-                        EventHelper.TrySmartMergeItems(entityManager, playerInventory, invEntity);
-                    }
-                }
-            }));
-        }
-
-
-        private static void UpdateInventoryList(EntityManager entityManager, Entity character)
-        {
-            var entities = entityManager.GetAllEntities(Unity.Collections.Allocator.Persistent);
-            if (character == null || character == Entity.Null)
+            if (playerInventory == Entity.Null)
             {
                 return;
             }
 
-            // Run as task to avoid client stutter
-            _updateListTask = Task.Run(new Action(() =>
+            foreach (var invEntity in _inventoryEntities)
             {
-                lock (_lock)
+                if (invEntity == Entity.Null || playerInventory == Entity.Null)
                 {
-                    _inventoryEntities = new List<Entity>();
-
-                    foreach (var entity in entities)
-                    {
-                        Entity inventoryEntity = new Entity();
-                        InventoryUtilities.TryGetInventoryEntity(entityManager, entity, out inventoryEntity);
-
-                        if (inventoryEntity == null || inventoryEntity == Entity.Null)
-                        {
-                            continue;
-                        }
-
-                        if (!QuickStashShared.IsEntityStash(entityManager, inventoryEntity))
-                        {
-                            continue;
-                        }
-
-                        _inventoryEntities.Add(inventoryEntity);
-                    }
-
-                    _lastInventoryUpdate = DateTime.Now;
+                    continue;
                 }
-            }));
+
+                EventHelper.TrySmartMergeItems(VWorld.Client.EntityManager, playerInventory, invEntity);
+            }
+        }
+
+        public static void UpdateInventoryList()
+        {
+            if (_inventoryEntities.Count == 0 || DateTime.Now - _lastInventoryUpdate < TimeSpan.FromSeconds(10))
+            {
+                return;
+            }
+
+            var character = EntitiesHelper.GetLocalCharacterEntity(VWorld.Client.EntityManager);
+            if (character == Entity.Null)
+            {
+                return;
+            }
+
+            _inventoryEntities = new List<Entity>();
+            var entities = QuickStashShared.GetStashEntities(VWorld.Client.EntityManager);
+
+            foreach (var entity in entities)
+            {
+                Entity inventoryEntity;
+                InventoryUtilities.TryGetInventoryEntity(VWorld.Client.EntityManager, entity, out inventoryEntity);
+
+                if (inventoryEntity == Entity.Null)
+                {
+                    continue;
+                }
+
+                _inventoryEntities.Add(inventoryEntity);
+            }
+
+            _lastInventoryUpdate = DateTime.Now;
         }
     }
 }

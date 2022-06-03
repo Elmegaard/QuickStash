@@ -26,7 +26,7 @@ namespace vrising_stash
             configKeybinding = KeybindManager.Register(new()
             {
                 Id = "elmegaard.quickstash.deposit",
-                Category = "Client",
+                Category = "QuickStash",
                 Name = "Deposit",
                 DefaultKeybinding = KeyCode.G,
             });

@@ -1,11 +1,8 @@
 ﻿using ProjectM.Scripting;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Unity.Entities;
 using Unity.Transforms;
 using UnityEngine;
-using Wetstone.API;
 
 namespace vrising_stash
 {
@@ -13,10 +10,10 @@ namespace vrising_stash
     {
         public static void IsInteractingWithInventory(ref bool __result, Entity interactor, Entity inventory, EntityManager entityManager)
         {
-            if (!VWorld.IsServer)
-            {
-                return;
-            }
+            //if (!VWorld.IsServer)
+            //{
+            //    return;
+            //}
 
             if (!QuickStashShared.IsEntityStash(entityManager, inventory))
             {
@@ -59,6 +56,5 @@ namespace vrising_stash
 
             return true;
         }
-
     }
 }
