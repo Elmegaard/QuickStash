@@ -39,6 +39,7 @@ For server configuration, after running the game once, the config file will be g
 - Increased default range to 50
 - Added Wetstone (keybinds added to controls in-game)
 - Code refactor
+- Fixed memory leak (but added small stutter when depositing)
 
 `1.1.2`
 

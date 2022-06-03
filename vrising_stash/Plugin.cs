@@ -11,12 +11,12 @@ namespace vrising_stash
 {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     [BepInDependency("xyz.molenzwiebel.wetstone")]
-    [Wetstone.API.Reloadable]
+    [Reloadable]
     public class Plugin : BasePlugin
     {
         public static ManualLogSource Logger;
 
-        public static Wetstone.API.Keybinding configKeybinding;
+        public static Keybinding configKeybinding;
         public static ConfigEntry<float> configMaxDistance;
 
         private void InitConfig()
