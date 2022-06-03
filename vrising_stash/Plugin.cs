@@ -5,21 +5,32 @@ using BepInEx.Logging;
 using HarmonyLib;
 using System.Reflection;
 using UnityEngine;
+using Wetstone.API;
 
 namespace vrising_stash
 {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+    [BepInDependency("xyz.molenzwiebel.wetstone")]
+    [Wetstone.API.Reloadable]
     public class Plugin : BasePlugin
     {
         public static ManualLogSource Logger;
 
-        public static ConfigEntry<KeyCode> configKeybinding;
+        public static Wetstone.API.Keybinding configKeybinding;
         public static ConfigEntry<float> configMaxDistance;
 
         private void InitConfig()
         {
-            configKeybinding = Config.Bind("Client", "Keybinding", KeyCode.G, "The key to press to transfer items");
             configMaxDistance = Config.Bind("Server", "MaxDistance", 50.0f, "The max distance for transfering items");
+
+            configKeybinding = KeybindManager.Register(new()
+            {
+                Id = "elmegaard.quickstash.deposit",
+                Category = "Client",
+                Name = "Deposit",
+                DefaultKeybinding = KeyCode.G,
+            });
+
         }
 
         public override void Load()
@@ -30,6 +41,13 @@ namespace vrising_stash
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
             Log.LogInfo(Harmony.GetAllPatchedMethods().Join());
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+        }
+
+        public override bool Unload()
+        {
+            Config.Clear();
+            KeybindManager.Unregister(configKeybinding);
+            return true;
         }
     }
 }

@@ -13,14 +13,19 @@ Note this is both a client and server mod.
 
 ### Configuration
 
-After running the game once, the config files will be generated.
+The keybindings are changed in the menu in-game.
 
-- Update client config in _(VRising folder)/BepInEx/config/quick_stash.cfg_
+For server configuration, after running the game once, the config file will be generated.
+
 - Update server config in _(VRising folder)/VRising_Server/BepInEx/config/quick_stash.cfg_
 
 ### Troubleshooting
 
 - If the mod only works when a stash is open, it is because the server part of the mod is not installed. There has been reported issues with this in singleplayer. Unfortunately the only fix I have found for now is to run a dedicated server instead of running singleplayer.
+
+### Known Issues
+
+- Silver debuff will not get removed
 
 ### Support
 
@@ -32,6 +37,7 @@ After running the game once, the config files will be generated.
 `1.1.3`
 
 - Increased default range to 50
+- Added Wetstone (keybinds added to controls in-game)
 
 `1.1.2`
 

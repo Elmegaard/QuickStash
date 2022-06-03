@@ -23,7 +23,7 @@ namespace vrising_stash
         private static List<Entity> _inventoryEntities = new List<Entity>();
         private static Task _updateListTask = null;
         private static Task _transferTask = null;
-        private static object _lock = new object();
+        private static readonly object _lock = new();
 
         [HarmonyPatch(typeof(GameplayInputSystem), nameof(GameplayInputSystem.HandleInput))]
         [HarmonyPostfix]
@@ -44,7 +44,7 @@ namespace vrising_stash
                 }
             }
 
-            if ((_transferTask == null || _transferTask.IsCompleted) && Input.GetKeyInt(Plugin.configKeybinding.Value) && DateTime.Now - _lastInventoryTransfer > TimeSpan.FromSeconds(2))
+            if ((_transferTask == null || _transferTask.IsCompleted) && (Input.GetKeyInt(Plugin.configKeybinding.Primary) || Input.GetKeyInt(Plugin.configKeybinding.Secondary)) && DateTime.Now - _lastInventoryTransfer > TimeSpan.FromSeconds(2))
             {
                 TransferItems(__instance);
             }
@@ -72,10 +72,11 @@ namespace vrising_stash
 
                     foreach (var invEntity in _inventoryEntities)
                     {
-                        if (invEntity == null || invEntity == Entity.Null)
+                        if (invEntity == Entity.Null || playerInventory == Entity.Null)
                         {
                             continue;
                         }
+
                         EventHelper.TrySmartMergeItems(entityManager, playerInventory, invEntity);
                     }
                 }

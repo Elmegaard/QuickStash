@@ -13,10 +13,11 @@
   <ItemGroup>
     <PackageReference Include="BepInEx.IL2CPP" Version="6.0.0-*" IncludeAssets="compile" />
     <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
+    <PackageReference Include="Wetstone" Version="1.0.0" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="XCOPY /Y /R &quot;$(TargetDir)$(TargetName).*&quot; &quot;F:\SteamLibrary\steamapps\common\VRising\BepInEx\plugins\&quot;&#xD;&#xA;XCOPY /Y /R &quot;$(TargetDir)$(TargetName).*&quot; &quot;F:\SteamLibrary\steamapps\common\VRising\VRising_Server\BepInEx\plugins\&quot;" />
+    <Exec Command="XCOPY /Y /R &quot;$(TargetDir)$(TargetName).*&quot; &quot;F:\SteamLibrary\steamapps\common\VRising\BepInEx\WetstonePlugins\&quot;&#xD;&#xA;XCOPY /Y /R &quot;$(TargetDir)$(TargetName).*&quot; &quot;F:\SteamLibrary\steamapps\common\VRising\VRising_Server\BepInEx\WetstonePlugins\&quot;" />
   </Target>
 
   <ItemGroup>
