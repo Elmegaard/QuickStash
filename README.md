@@ -32,7 +32,8 @@ For server configuration, after running the game once, the config file will be g
 - Open an [issue](https://github.com/Elmegaard/QuickStash/issues) on [github](https://github.com/Elmegaard/QuickStash)
 - Ask in the [V Rising Mod Community](https://discord.gg/CWzkHvekg3) Discord
 
-### Changelog
+<details>
+<summary>Changelog</summary>
 
 `1.2.2` (unreleased)
 
@@ -70,3 +71,5 @@ For server configuration, after running the game once, the config file will be g
 `1.0.0`
 
 - Initial mod upload
+
+</details>
