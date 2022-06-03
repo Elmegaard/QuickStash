@@ -30,7 +30,6 @@ namespace vrising_stash
                 Name = "Deposit",
                 DefaultKeybinding = KeyCode.G,
             });
-
         }
 
         public override void Load()
