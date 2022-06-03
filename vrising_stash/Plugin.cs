@@ -18,6 +18,8 @@ namespace vrising_stash
 
         public static Keybinding configKeybinding;
         public static ConfigEntry<float> configMaxDistance;
+        private Harmony _hooks;
+
 
         private void InitConfig()
         {
@@ -38,7 +40,7 @@ namespace vrising_stash
             InitConfig();
             QuickStashClient.Reset();
 
-            Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
+            _hooks = Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         }
 
@@ -46,7 +48,7 @@ namespace vrising_stash
         {
             Config.Clear();
             KeybindManager.Unregister(configKeybinding);
-            Harmony.UnpatchAll();
+            _hooks.UnpatchSelf();
             return true;
         }
     }
