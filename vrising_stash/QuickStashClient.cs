@@ -13,6 +13,12 @@ namespace vrising_stash
         private static DateTime _lastInventoryTransfer = DateTime.Now;
         private static List<Entity> _inventoryEntities = new List<Entity>();
 
+        public static void Reset()
+        {
+            _lastInventoryTransfer = DateTime.Now;
+            _inventoryEntities = new List<Entity>();
+        }
+
         public static void HandleInput(GameplayInputSystem __instance)
         {
             //if (!VWorld.IsClient)
@@ -20,8 +26,10 @@ namespace vrising_stash
             //    return;
             //}
 
+
             if ((Input.GetKeyInt(Plugin.configKeybinding.Primary) || Input.GetKeyInt(Plugin.configKeybinding.Secondary)) && DateTime.Now - _lastInventoryTransfer > TimeSpan.FromSeconds(2))
             {
+                _lastInventoryTransfer = DateTime.Now;
                 UpdateInventoryList();
                 TransferItems();
             }
@@ -29,13 +37,16 @@ namespace vrising_stash
 
         private static void TransferItems()
         {
+            if (_inventoryEntities.Count == 0)
+            {
+                return;
+            }
+
             var character = EntitiesHelper.GetLocalCharacterEntity(VWorld.Client.EntityManager);
             if (character == Entity.Null)
             {
                 return;
             }
-
-            _lastInventoryTransfer = DateTime.Now;
 
             Entity playerInventory;
             InventoryUtilities.TryGetInventoryEntity(VWorld.Client.EntityManager, character, out playerInventory);
@@ -58,11 +69,6 @@ namespace vrising_stash
 
         public static void UpdateInventoryList()
         {
-            if (_inventoryEntities.Count == 0)
-            {
-                return;
-            }
-
             var character = EntitiesHelper.GetLocalCharacterEntity(VWorld.Client.EntityManager);
             if (character == Entity.Null)
             {

@@ -36,9 +36,9 @@ namespace vrising_stash
         {
             Logger = Log;
             InitConfig();
+            QuickStashClient.Reset();
 
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
-            Log.LogInfo(Harmony.GetAllPatchedMethods().Join());
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         }
 
@@ -46,6 +46,7 @@ namespace vrising_stash
         {
             Config.Clear();
             KeybindManager.Unregister(configKeybinding);
+            Harmony.UnpatchAll();
             return true;
         }
     }
