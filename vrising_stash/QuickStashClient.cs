@@ -27,7 +27,7 @@ namespace vrising_stash
             //}
 
 
-            if ((Input.GetKeyInt(Plugin.configKeybinding.Primary) || Input.GetKeyInt(Plugin.configKeybinding.Secondary)) && DateTime.Now - _lastInventoryTransfer > TimeSpan.FromSeconds(2))
+            if ((Input.GetKeyInt(Plugin.configKeybinding.Primary) || Input.GetKeyInt(Plugin.configKeybinding.Secondary)) && DateTime.Now - _lastInventoryTransfer > TimeSpan.FromSeconds(0.5))
             {
                 _lastInventoryTransfer = DateTime.Now;
                 UpdateInventoryList();

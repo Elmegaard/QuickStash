@@ -34,6 +34,10 @@ For server configuration, after running the game once, the config file will be g
 
 ### Changelog
 
+`1.2.2` (unreleased)
+
+- Reduce cooldown from 2 seconds to 0.5 seconds
+
 `1.2.1`
 
 - Fixed Readme
