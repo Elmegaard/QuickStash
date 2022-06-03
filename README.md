@@ -29,12 +29,12 @@ For server configuration, after running the game once, the config file will be g
 
 ### Support
 
-- Open a ticket on github
+- Open an [issue](https://github.com/Elmegaard/QuickStash/issues) on [github](https://github.com/Elmegaard/QuickStash)
 - Ask in the [V Rising Mod Community](https://discord.gg/CWzkHvekg3) Discord
 
 ### Changelog
 
-`1.1.3`
+`1.2.0` (unreleased)
 
 - Increased default range to 50
 - Added Wetstone (keybinds added to controls in-game)
