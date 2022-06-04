@@ -30,8 +30,14 @@ For server configuration, after running the game once, the config file will be g
 
 ### Support
 
+For you
+
 - Open an [issue](https://github.com/Elmegaard/QuickStash/issues) on [github](https://github.com/Elmegaard/QuickStash)
 - Ask in the [V Rising Mod Community](https://discord.gg/CWzkHvekg3) Discord
+
+For me
+
+- [Buy me a cop of coffee](https://www.buymeacoffee.com/elmegaard)
 
 <details>
 <summary>Changelog</summary>
