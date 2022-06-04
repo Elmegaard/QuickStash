@@ -37,7 +37,7 @@ For you
 
 For me
 
-- [Buy me a cop of coffee](https://ko-fi.com/elmegaard)
+- [Buy me a cup of coffee](https://ko-fi.com/elmegaard)
 
 <details>
 <summary>Changelog</summary>
