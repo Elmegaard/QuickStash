@@ -7,11 +7,16 @@ Note this is both a client and server mod.
 
 ### Installation
 
+Required
+
 - Install [BepInEx](https://v-rising.thunderstore.io/package/BepInEx/BepInExPack_V_Rising/)
 - Install [Wetstone](https://v-rising.thunderstore.io/package/molenzwiebel/Wetstone/)
 - Extract _quick_stash.dll_ into _(VRising folder)/BepInEx/plugins_
 - Extract _quick_stash.dll_ into _(VRising folder)/VRising_Server/BepInEx/plugins_
-- OPTIONAL for singleplayer, install [ServerLaunchFix](https://v-rising.thunderstore.io/package/Mythic/ServerLaunchFix/) to fix issues with the server mod not working
+
+Optional
+
+- for singleplayer, install [ServerLaunchFix](https://v-rising.thunderstore.io/package/Mythic/ServerLaunchFix/) to fix issues with the server mod not working
 
 ### Configuration
 
