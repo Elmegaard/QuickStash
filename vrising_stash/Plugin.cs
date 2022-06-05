@@ -23,7 +23,7 @@ namespace vrising_stash
 
         private void InitConfig()
         {
-            configMaxDistance = Config.Bind("Server", "MaxDistance", 50.0f, "The max distance for transfering items");
+            configMaxDistance = Config.Bind("Server", "MaxDistance", 50.0f, "The max distance for transfering items. 10 'distance' is about 1 tile.");
 
             configKeybinding = KeybindManager.Register(new()
             {
