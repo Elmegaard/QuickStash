@@ -1,4 +1,5 @@
-﻿using ProjectM;
+﻿using Gameplay.Systems;
+using ProjectM;
 using ProjectM.Gameplay.Scripting;
 using ProjectM.Network;
 using ProjectM.Scripting;
@@ -14,6 +15,11 @@ namespace vrising_stash
 {
     public class QuickStashServer
     {
+        private static readonly List<PrefabGUID> _itemRefreshGuids = new() {
+            new PrefabGUID(1686577386), // Silver Ore
+            new PrefabGUID(-949672483)  // Silver Coin
+        };
+
         private static readonly Dictionary<Entity, DateTime> _lastMerge = new();
 
         public static void OnMergeInventoriesMessage(FromCharacter fromCharacter, MergeInventoriesMessage msg)
@@ -29,19 +35,19 @@ namespace vrising_stash
             }
             _lastMerge[fromCharacter.Character] = DateTime.Now;
 
-            Entity playerInventory;
-            InventoryUtilities.TryGetInventoryEntity(VWorld.Server.EntityManager, fromCharacter.Character, out playerInventory);
+            InventoryUtilities.TryGetInventoryEntity(VWorld.Server.EntityManager, fromCharacter.Character, out Entity playerInventory);
 
             if (playerInventory == Entity.Null)
             {
                 return;
             }
 
+            var gameManager = VWorld.Server.GetExistingSystem<ServerScriptMapper>()?._ServerGameManager;
+            var gameDataSystem = VWorld.Server.GetExistingSystem<GameDataSystem>();
 
             var entities = QuickStashShared.GetStashEntities(VWorld.Server.EntityManager);
             foreach (var toEntity in entities)
             {
-                var gameManager = VWorld.Server.GetExistingSystem<ServerScriptMapper>()?._ServerGameManager;
                 if (!gameManager._TeamChecker.IsAllies(fromCharacter.Character, toEntity))
                 {
                     continue;
@@ -52,9 +58,13 @@ namespace vrising_stash
                     continue;
                 }
 
-                var gameDataSystem = VWorld.Server.GetExistingSystem<GameDataSystem>();
-                var movedAny = false;
-                InventoryUtilitiesServer.TrySmartMergeInventories(VWorld.Server.EntityManager, gameDataSystem.ItemHashLookupMap, playerInventory, toEntity, out movedAny);
+                InventoryUtilitiesServer.TrySmartMergeInventories(VWorld.Server.EntityManager, gameDataSystem.ItemHashLookupMap, playerInventory, toEntity, out _);
+            }
+
+            // Refresh silver debuff
+            foreach (var prefabGuid in _itemRefreshGuids)
+            {
+                InventoryUtilitiesServer.CreateInventoryChangedEvent(VWorld.Server.EntityManager, fromCharacter.Character, prefabGuid, 0, InventoryChangedEventType.Moved);
             }
         }
 
@@ -63,7 +73,7 @@ namespace vrising_stash
             var interactorLocation = entityManager.GetComponentData<LocalToWorld>(interactor);
             var inventoryLocation = entityManager.GetComponentData<LocalToWorld>(inventory);
 
-            Vector3 difference = new Vector3(
+            Vector3 difference = new(
                 interactorLocation.Position.x - inventoryLocation.Position.x,
                 interactorLocation.Position.y - inventoryLocation.Position.y,
                 interactorLocation.Position.z - inventoryLocation.Position.z);
@@ -73,7 +83,6 @@ namespace vrising_stash
                   Math.Pow(difference.y, 2f) +
                   Math.Pow(difference.z, 2f));
 
-            Plugin.Logger.LogInfo(distance);
             if (distance > Plugin.configMaxDistance.Value)
             {
                 return false;

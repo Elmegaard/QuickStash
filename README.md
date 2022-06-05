@@ -11,6 +11,7 @@ Note this is both a client and server mod.
 - Install [Wetstone](https://v-rising.thunderstore.io/package/molenzwiebel/Wetstone/)
 - Extract _quick_stash.dll_ into _(VRising folder)/BepInEx/plugins_
 - Extract _quick_stash.dll_ into _(VRising folder)/VRising_Server/BepInEx/plugins_
+- OPTIONAL for singleplayer, install [ServerLaunchFix](https://v-rising.thunderstore.io/package/Mythic/ServerLaunchFix/) to fix issues with the server mod not working
 
 ### Configuration
 
@@ -22,11 +23,7 @@ For server configuration, after running the game once, the config file will be g
 
 ### Troubleshooting
 
-- If the mod only works when a stash is open, it is because the server part of the mod is not installed. There has been reported issues with this in singleplayer. Unfortunately the only fix I have found for now is to run a dedicated server instead of running singleplayer.
-
-### Known Issues
-
-- Silver debuff will not get removed
+- If the mod doesn't work, it is probably because the server part is not installed, check your BepInEx logs on both the client and server to make sure you are running the latest version of both QuickStash and Wetstone.
 
 ### Support
 
@@ -41,6 +38,12 @@ For me
 
 <details>
 <summary>Changelog</summary>
+
+`1.2.3`
+
+- Upgrade to Wetstone 1.1.0
+- Potentially fixed rare client crash
+- Fixed silver debuff not getting removed
 
 `1.2.2`
 
