@@ -34,6 +34,19 @@ namespace vrising_stash
             });
         }
 
+        private void RegisterMessages()
+        {
+            VNetworkRegistry.RegisterServerboundStruct<MergeInventoriesMessage>((fromCharacter, msg) =>
+            {
+                QuickStashServer.OnMergeInventoriesMessage(fromCharacter, msg);
+            });
+        }
+
+        private void ClearMessages()
+        {
+            VNetworkRegistry.UnregisterStruct<MergeInventoriesMessage>();
+        }
+
         public override void Load()
         {
             Logger = Log;
@@ -41,6 +54,8 @@ namespace vrising_stash
             QuickStashClient.Reset();
 
             _hooks = Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
+            RegisterMessages();
+
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         }
 
@@ -49,6 +64,7 @@ namespace vrising_stash
             Config.Clear();
             KeybindManager.Unregister(configKeybinding);
             _hooks.UnpatchSelf();
+            ClearMessages();
             return true;
         }
     }

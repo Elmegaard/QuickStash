@@ -36,16 +36,7 @@ namespace vrising_stash
 
         public static bool IsEntityStash(EntityManager entityManager, Entity entity)
         {
-            var archType = UnsafeEntityManagerUtility.GetEntityArchetype(entityManager, entity);
-            var componentTypes = archType.GetComponentTypes(Allocator.Temp).ToArray().ToList();
-
-            // Make sure all comoponents in _containerComponents is in the entity
-            if (ContainerComponents.Select(x => x.TypeIndex).Except(componentTypes.Select(x => x.TypeIndex)).Any())
-            {
-                return false;
-            }
-
-            return true;
+            return !ContainerComponents.Any(x => !entityManager.HasComponent(entity, x));
         }
     }
 }
